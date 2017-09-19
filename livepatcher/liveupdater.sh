@@ -65,7 +65,7 @@ fi
 (wget $PATCHURL -O $PATCHZIP) | $YAD --center --width=400 --progress --progress-text="... downloading" --auto-close
 [ ! -f "$PATCHZIP" ] && F_ERR "Missing patch update file! Something went wrong with download" && F_EXIT "$0 patchdownload"
 
-(echo 0 && cd /tmp && unzip $PATCHZIP >>$LOG 2>&1 && cp -av arch_fwulpatch-master/patches/* $FWULPATCHDIR/patches/ >> $LOG 2>&1) | $YAD --width=300 --center --pulsate --progress --progress-text="... refresh local patch db" --auto-close
+(echo 0 && cd /tmp && unzip $PATCHZIP >>$LOG 2>&1 && cp -av arch_fwulpatch-master/patches/* $FWULPATCHDIR/ >> $LOG 2>&1) | $YAD --width=300 --center --pulsate --progress --progress-text="... refresh local patch db" --auto-close
 REFRESHDB=$?
 
 if [ $REFRESHDB -eq 0 ];then
