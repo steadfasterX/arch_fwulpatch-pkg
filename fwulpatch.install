@@ -16,7 +16,7 @@ if [ $ME -ne 0 ];then
     exit
 fi
  
-source arch_${pkgname}-${pkgver}/${pkgdir}/scripts/generic.vars
+source arch_${pkgname}-${pkgver}/${pkgdir}/livepatcher/generic.vars
 
 # create paths
 [ ! -d $FWULLIB ] && mkdir $FWULLIB && echo created $FWULLIB
@@ -37,7 +37,7 @@ EOSFT
 chmod +x /home/$LOGINUSR/Desktop/livepatcher.desktop
 chown $LOGINUSR /home/$LOGINUSR/Desktop/livepatcher.desktop
 
-install -o ${USER} -g ${GROUP} -m 0755 scripts/generic.func $FWULLIB/generic.func
-install -o ${USER} -g ${GROUP} -m 0744 scripts/generic.vars $FWULLIB/generic.vars
+install -o ${USER} -g ${GROUP} -m 0755 livepatcher/generic.func $FWULLIB/generic.func
+install -o ${USER} -g ${GROUP} -m 0744 livepatcher/generic.vars $FWULLIB/generic.vars
 
 exit 0
