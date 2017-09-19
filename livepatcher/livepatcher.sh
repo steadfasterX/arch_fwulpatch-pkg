@@ -8,7 +8,6 @@
 
 LOGINUSR=$SUDO_USER
 ME=$(id -u)
-PATCHPATH=/opt/fwul/patches
 FWULVARS=/var/lib/fwul/generic.vars
 YAD="yad --title='FWUL LivePatcher'"
 DEBUG=0
@@ -53,8 +52,8 @@ else
 fi
 
 # check if patch path exists
-if [ ! -d "$PATCHPATH" ];then 
-    F_LOG "ERROR: Patch directory ($PATCHPATH) does not exists! ABORTED"
+if [ ! -d "$FWULPATCHDIR" ];then 
+    F_LOG "ERROR: Patch directory ($FWULPATCHDIR) does not exists! ABORTED"
     $YAD --button="Exit" --text "\nERROR:\n\nPatch directory does not exists?!\n\n"
     F_EXIT "$0"
 fi
@@ -69,7 +68,7 @@ $YAD --center --width=800\
 [ $? -ne 99 ] && F_LOG "Aborted by user" && F_EXIT "$0"
 
 # patch
-for patch in $(find $PATCHPATH -type f -name *.sh);do
+for patch in $(find $FWULPATCHDIR -type f -name *.sh);do
     [ $DEBUG -eq 1 ] && echo "processing $patch"
     F_LOG "... processing $patch" $LOG
     spatch="${patch##*/}"

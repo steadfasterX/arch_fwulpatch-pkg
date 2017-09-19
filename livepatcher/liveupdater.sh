@@ -8,10 +8,12 @@
 
 LOGINUSR=$SUDO_USER
 ME=$(id -u)
-PATCHPATH=/opt/fwul/patches
 FWULVARS=/var/lib/fwul/generic.vars
 YAD="yad --title='Updating FWUL LivePatcher'"
 DEBUG=0
+PATCHURL="https://github.com/steadfasterX/arch_fwulpatch/archive/master.zip"
+PATCHZIP=fwulpatches.zip
+
 
 # check perms & restart if required
 if [ $ME -ne 0 ];then
@@ -60,16 +62,16 @@ if [ ! -d "$PATCHPATH" ];then
 fi
 
 # show download dialog
-(wget $PATCHZIP -O $PATCHTMP) | $YAD --center --width=400 --progress --progress-text="... downloading" --auto-close
-[ ! -f "$PATCHTMP" ] && F_ERR "Missing patch update file! Something went wrong with download" && F_EXIT "$0 patchdownload"
+(wget $PATCHURL -O $PATCHZIP) | $YAD --center --width=400 --progress --progress-text="... downloading" --auto-close
+[ ! -f "$PATCHZIP" ] && F_ERR "Missing patch update file! Something went wrong with download" && F_EXIT "$0 patchdownload"
 
-(echo 0 && cd /tmp && unzip $PATCHTMP/arch_fwulpatch-master/arch_fwulpatch-master >>$LOG 2>&1 && cp -av patches/* $FWULPATCHDIR/patches/ >> $LOG 2>&1) | $YAD --width=300 --center --pulsate --progress --progress-text="... refresh local patch db" --auto-close
+(echo 0 && cd /tmp && unzip $PATCHZIP >>$LOG 2>&1 && cp -av fwulpatches/arch_fwulpatch-master/patches/* $FWULPATCHDIR/patches/ >> $LOG 2>&1) | $YAD --width=300 --center --pulsate --progress --progress-text="... refresh local patch db" --auto-close
 REFRESHDB=$?
 
 if [ $REFRESHDB -eq 0 ];then
     $YAD --center --width=500 --text "Successfully updated the FWUL LivePatcher database"
 else
-    F_ERR "ERROR while refresing FWUL LivePatcher db! Check your internet connection and logfile:\n$LOG\n"
+    F_ERR "ERROR while refreshing FWUL LivePatcher db! Check your internet connection and logfile:\n$LOG\n"
 fi
 
 F_EXIT "All finished" $REFRESHDB
