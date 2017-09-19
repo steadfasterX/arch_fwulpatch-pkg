@@ -9,7 +9,7 @@
 LOGINUSR=$SUDO_USER
 ME=$(id -u)
 FWULVARS=/var/lib/fwul/generic.vars
-YAD="yad --title='FWUL LivePatcher'"
+YAD="yad --title=FWUL-LivePatcher"
 DEBUG=0
 
 # check perms & restart if required
@@ -46,7 +46,7 @@ fi
 if [ -r "$RELEASE" ];then
     source $RELEASE
     [ $DEBUG -eq 1 ] && echo "sourced $RELEASE"
-    PREVRELEASE=$fwulversion
+    PREVVER=$fwulversion
 else
     F_ERR "cant find needed library file"
     F_EXIT "$0 RELEASE" "3"
