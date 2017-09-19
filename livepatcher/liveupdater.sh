@@ -61,6 +61,10 @@ if [ ! -d "$FWULPATCHDIR" ];then
     F_EXIT "$0"
 fi
 
+# clean any previous run
+[ -d /tmp/arch_fwulpatch-master ] && F_LOG "$(rm -vf /tmp/arch_fwulpatch-master)"
+[ -f $PATCHZIP ] && F_LOG "$(rm -vf $PATCHZIP)"
+
 # show download dialog
 (wget $PATCHURL -O $PATCHZIP) | $YAD --center --width=400 --progress --progress-text="... downloading" --auto-close
 [ ! -f "$PATCHZIP" ] && F_ERR "Missing patch update file! Something went wrong with download" && F_EXIT "$0 patchdownload"
