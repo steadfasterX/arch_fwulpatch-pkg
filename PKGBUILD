@@ -5,7 +5,7 @@ pkgdesc="Patching a FWUL major release without the need to re-install/-deploy"
 arch=('any')
 url="https://github.com/steadfasterX/arch_fwulpatch"
 license=('LGPL3')
-depends=('sudo' 'pacman')
+depends=('sudo' 'pacman' 'gksu')
 makedepends=('git')
 source=("https://github.com/steadfasterX/arch_$pkgname/archive/v$pkgver.tar.gz")
 md5sums=('SKIP')
@@ -27,9 +27,9 @@ package() {
     install -o ${USER} -g ${GROUP} -m 0700 patches/* $pkgdir/${FWULPATCHDIR}
 
     # inject funcs (should be moved to separate pkg...)
-    mkdir -p $PFWULLIB
-    install -o ${USER} -g ${GROUP} -m 0755 $srcdir/../livepatcher/generic.func $PFWULLIB/generic.func
-    install -o ${USER} -g ${GROUP} -m 0744 $srcdir/../livepatcher/generic.vars $PFWULLIB/generic.vars
+    mkdir -p $pkgdir/$PFWULLIB
+    install -o ${USER} -g ${GROUP} -m 0755 $srcdir/../livepatcher/generic.func $pkgdir/$PFWULLIB/
+    install -o ${USER} -g ${GROUP} -m 0744 $srcdir/../livepatcher/generic.vars $pkgdir/$PFWULLIB/
     
     # add license
     mkdir -p "$pkgdir/usr/share/licenses/$pkgname"
