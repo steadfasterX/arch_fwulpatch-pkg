@@ -46,6 +46,7 @@ fi
 if [ -r "$RELEASE" ];then
     source $RELEASE
     [ $DEBUG -eq 1 ] && echo "sourced $RELEASE"
+    PREVRELEASE=$fwulversion
 else
     F_ERR "cant find needed library file"
     F_EXIT "$0 RELEASE" "3"
@@ -82,5 +83,13 @@ for patch in $(find $FWULPATCHDIR -type f -name *.sh);do
 done
 
 
+source $RELEASE
+if [ "$PREVVER" != "$fwulversion" ];then
+    F_LOG "previous FWUL version $PREVVER differs from the new one: $fwulversion"
+    $YAD --center --width=800 --text "\nAll patches applied. Upgraded FWUL from <b>$PREVVER</b> to <b>$fwulversion</b>\n"
+else
+    F_LOG "previous FWUL version $PREVVER matches new one: $fwulversion"
+    $YAD --center --width=800 --text "\nFinished - no update taken."
+fi
 
-echo all finished
+F_LOG "All finished"
