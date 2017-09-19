@@ -1,0 +1,59 @@
+#!/bin/bash
+##############################################################
+#
+# Generic functions used for FWUL in several places
+#
+# Usage: source generic.func
+#
+# Copyright (c) 2017: steadfasterX <steadfasterX | gmail - com >
+##############################################################
+
+# echo output and save it in a log as well
+F_LOG(){
+  # takes 2 arguments (both are mandatory)
+  # 1 => Message to log/echo (can handle \t and \n)
+  # 2 => Logfile to append that message
+  
+  MSG="$1"
+  WLOG="$2"
+  if [ -z "$MSG" ]||[ ! -w "$LOG" ];then
+     echo -e "ERROR: missing vars for writing logfile!\nLOG: $LOG\nMSG: $MSG"
+  fi
+
+  echo -e "$(date +%F_%T) - $MSG" >> $LOG
+}
+
+# echo output and save it in a log as well
+F_ECHOLOG(){
+  # takes 2 arguments (both are mandatory)
+  # 1 => Message to log/echo (can handle \t and \n)
+  # 2 => Logfile to append that message
+  
+  F_LOG "$1" "$LOG"
+  echo -e "$1" 
+}
+
+# print error message
+F_ERR(){
+  # takes 2 arguments
+  # 1 => Message to log
+  # 2 => Logfile for writing
+
+  F_LOG "starting $FUNCNAME" "$LOG"
+  F_LOG "ERROR: $1" "$LOG"
+}
+
+# exit properly
+F_EXIT(){
+  # takes 2 arguments (mandantory)
+  # 1 => the function or reason who calls the exit function
+  # 2 => the exitcode to be used
+  EREASON=$1
+  ECODE=$2
+  
+  F_ECHOLOG "EXIT: $EREASON with code $ECODE" $LOG
+  
+  # TODO (optional): do any other actions
+  exit $ECODE
+}
+
