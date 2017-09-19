@@ -1,7 +1,7 @@
 #!/bin/bash - 
 ######################################################################################
 #
-# FWUL Live Patcher
+# FWUL Live Patcher - Updater
 #
 # Copyright (c) 2017: steadfasterX <steadfasterX | gmail - com >
 ######################################################################################
@@ -10,7 +10,7 @@ LOGINUSR=$SUDO_USER
 ME=$(id -u)
 PATCHPATH=/opt/fwul/patches
 FWULVARS=/var/lib/fwul/generic.vars
-YAD="yad --title='FWUL LivePatcher'"
+YAD="yad --title='Updating FWUL LivePatcher'"
 DEBUG=0
 
 # check perms & restart if required
@@ -28,7 +28,7 @@ else
 	exit
 fi
 # define the log
-LOG=${LOGPATH}/livepatcher.log
+LOG=${LOGPATH}/liveupdater.log
 
 [ ! -d "$LOGPATH" ] && mkdir -p $LOGPATH
 echo -e "\n$(date) - Starting $0" >> $LOG
@@ -59,29 +59,17 @@ if [ ! -d "$PATCHPATH" ];then
     F_EXIT "$0"
 fi
 
-# show main dialog
-$YAD --center --width=800\
-    --text "\nWelcome to the FWUL Live Patcher.\nThis is mainly useful for FWUL <b>persistent</b> as you have to re-run this on <b>forgetful</b> after each reboot\n" \
-    --form \
-    --field="Check &amp; Download Patches":FBTN "/usr/local/bin/liveupdater.sh" \
-    --button="Cancel":1 --button="Start Live Patcher":99
+# show download dialog
+(wget $PATCHZIP -O $PATCHTMP) | $YAD --center --width=400 --progress --progress-text="... downloading" --auto-close
+[ ! -f "$PATCHTMP" ] && F_ERR "Missing patch update file! Something went wrong with download" && F_EXIT "$0 patchdownload"
 
-[ $? -ne 99 ] && F_LOG "Aborted by user" && F_EXIT "$0"
+(echo 0 && cd /tmp && unzip $PATCHTMP/arch_fwulpatch-master/arch_fwulpatch-master >>$LOG 2>&1 && cp -av patches/* $FWULPATCHDIR/patches/ >> $LOG 2>&1) | $YAD --width=300 --center --pulsate --progress --progress-text="... refresh local patch db" --auto-close
+REFRESHDB=$?
 
-# patch
-for patch in $(find $PATCHPATH -type f -name *.sh);do
-    [ $DEBUG -eq 1 ] && echo "processing $patch"
-    F_LOG "... processing $patch" $LOG
-    spatch="${patch##*/}"
-    (bash $patch) | $YAD --center --width=500 --progress --progress-text="processing $spatch" --auto-close
-    PATCHERR=$?
-    if [ $PATCHERR -ne 0 ];then
-        F_ERR "problem occured with $patch"   
-        $YAD --button=Exit --text "problem occured with $patch! ABORTED.\nCheck $LOG"
-	F_EXIT "$0 patching"
-    fi	
-done
+if [ $REFRESHDB -eq 0 ];then
+    $YAD --center --width=500 --text "Successfully updated the FWUL LivePatcher database"
+else
+    F_ERR "ERROR while refresing FWUL LivePatcher db! Check your internet connection and logfile:\n$LOG\n"
+fi
 
-
-
-echo all finished
+F_EXIT "All finished" $REFRESHDB
