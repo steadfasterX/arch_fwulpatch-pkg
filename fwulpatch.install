@@ -31,5 +31,5 @@ EOSFT
 
 pre_remove(){
     source /var/lib/fwul/generic.vars
-    rm /home/$LOGINUSR/Desktop/livepatcher.desktop
+    [ -f /home/$LOGINUSR/Desktop/livepatcher.desktop ] && rm /home/$LOGINUSR/Desktop/livepatcher.desktop
 }
