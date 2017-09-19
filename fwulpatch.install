@@ -6,38 +6,30 @@
 # Copyright (c) 2017: steadfasterX <steadfasterX | gmail - com >
 #####################################################################
 
-LOGINUSR=$SUDO_USER
-ME=$(id -u)
-
-echo $@
-
-if [ $ME -ne 0 ];then
-    echo -e "\nERROR:\n\nYou have to run this with root permissions!\n\n"
-    exit
-fi
- 
-source arch_${pkgname}-${pkgver}/${pkgdir}/livepatcher/generic.vars
-
-# create paths
-[ ! -d $FWULLIB ] && mkdir $FWULLIB && echo created $FWULLIB
-[ ! -d $LOGPATH ] && mkdir $LOGPATH && echo created $LOGPATH
-
-
-# Creating Desktop icon
-cat >/home/$LOGINUSR/Desktop/livepatcher.desktop <<EOSFT
-[Desktop Entry]
-Version=1.0
-Type=Application
-Comment=FWUL LivePatcher
-Terminal=false
-Name=FWUL LivePatcher
-Exec=gksu -D "FWUL LivePatcher" /opt/fwul/patches/livepatcher.sh
-Icon=checkbox-touch
+post_install(){
+    source /var/lib/fwul/generic.vars
+    
+    # create paths
+    [ ! -d $FWULLIB ] && mkdir $FWULLIB && echo created $FWULLIB
+    [ ! -d $LOGPATH ] && mkdir $LOGPATH && echo created $LOGPATH
+    
+    # Creating Desktop icon
+    cat > /home/$LOGINUSR/Desktop/livepatcher.desktop <<EOSFT
+    [Desktop Entry]
+    Version=1.0
+    Type=Application
+    Comment=FWUL LivePatcher
+    Terminal=false
+    Name=FWUL LivePatcher
+    Exec=gksu -D "FWUL LivePatcher" /opt/fwul/patches/livepatcher.sh
+    Icon=checkbox-touch
 EOSFT
-chmod +x /home/$LOGINUSR/Desktop/livepatcher.desktop
-chown $LOGINUSR /home/$LOGINUSR/Desktop/livepatcher.desktop
 
-install -o ${USER} -g ${GROUP} -m 0755 livepatcher/generic.func $FWULLIB/generic.func
-install -o ${USER} -g ${GROUP} -m 0744 livepatcher/generic.vars $FWULLIB/generic.vars
+    chmod +x /home/$LOGINUSR/Desktop/livepatcher.desktop
+    chown $LOGINUSR /home/$LOGINUSR/Desktop/livepatcher.desktop
+}
 
-exit 0
+pre_remove(){
+    source /var/lib/fwul/generic.vars
+    rm /home/$LOGINUSR/Desktop/livepatcher.desktop
+}
