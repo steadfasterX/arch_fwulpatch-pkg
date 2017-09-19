@@ -57,3 +57,20 @@ F_EXIT(){
   exit $ECODE
 }
 
+# update FWUL version
+F_UPDVER(){
+    # takes 1 argument (mandantory)
+    # 1 => version number to write
+
+    NEWVER="$1"
+    [ -z "$NEWVER" ] && F_ERR "Missing new version id" && F_EXIT $FUNCNAME 3
+
+    cp $RELEASE ${RELEASE}.old
+    sed -i "s/fwulversion=*/fwulversion=$NEWVER/g" $RELEASE
+    if [ $? -ne 0 ];then
+        F_ERR "while trying to change FWUL version to $NEWVER"
+        F_EXIT $FUNCNAME 4
+    else
+        F_LOG "updated FWUL version to $NEWVER successfully"
+    fi
+}
