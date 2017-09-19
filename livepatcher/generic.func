@@ -66,11 +66,11 @@ F_UPDVER(){
     [ -z "$NEWVER" ] && F_ERR "Missing new version id" && F_EXIT $FUNCNAME 3
 
     cp $RELEASE ${RELEASE}.old
-    sed -i "s/fwulversion=*/fwulversion=$NEWVER/g" $RELEASE
+    sed -i "s/fwulversion=.*/fwulversion=$NEWVER/g" $RELEASE
     if [ $? -ne 0 ];then
         F_ERR "while trying to change FWUL version to $NEWVER"
         F_EXIT $FUNCNAME 4
     else
-        F_LOG "updated FWUL version to $NEWVER successfully"
+        F_LOG "updated FWUL version to $NEWVER successfully" $LOG
     fi
 }
