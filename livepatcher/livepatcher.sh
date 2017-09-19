@@ -63,7 +63,8 @@ fi
 for patch in $(find $PATCHPATH -type f -name *.sh);do
     [ $DEBUG -eq 1 ] && echo "processing $patch"
     F_LOG "... processing $patch" $LOG
-    bash $patch
+    spatch="${patch##*/}"
+    (bash $patch) | $YAD --center --width=500 --progress --progress-text="processing $spatch" --auto-close
     PATCHERR=$?
     if [ $PATCHERR -ne 0 ];then
         F_ERR "problem occured with $patch"   
