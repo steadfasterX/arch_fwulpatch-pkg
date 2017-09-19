@@ -9,7 +9,7 @@
 LOGINUSR=$SUDO_USER
 ME=$(id -u)
 FWULVARS=/var/lib/fwul/generic.vars
-YAD="yad --title='Updating FWUL LivePatcher'"
+YAD="yad --title=Updating-LivePatcher"
 DEBUG=0
 PATCHURL="https://github.com/steadfasterX/arch_fwulpatch/archive/master.zip"
 PATCHZIP=fwulpatches.zip
