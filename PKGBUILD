@@ -28,9 +28,9 @@ package() {
 
     # inject funcs (should be moved to separate pkg...)
     mkdir -p $pkgdir/$PFWULLIB $pkgdir/usr/local/bin
-    install -o ${USER} -g ${GROUP} -m 0755 $srcdir/../livepatcher/generic.func $pkgdir/$PFWULLIB/
-    install -o ${USER} -g ${GROUP} -m 0744 $srcdir/../livepatcher/generic.vars $pkgdir/$PFWULLIB/
-    install -o ${USER} -g ${GROUP} -m 0755 $srcdir/../livepatcher/livepatcher.sh $pkgdir/usr/local/bin/
+    install -o ${USER} -g ${GROUP} -m 0755 $srcdir/../livepatcher/*.func $pkgdir/$PFWULLIB/
+    install -o ${USER} -g ${GROUP} -m 0744 $srcdir/../livepatcher/*.vars $pkgdir/$PFWULLIB/
+    install -o ${USER} -g ${GROUP} -m 0755 $srcdir/../livepatcher/*.sh $pkgdir/usr/local/bin/
     
     # add license
     mkdir -p "$pkgdir/usr/share/licenses/$pkgname"
