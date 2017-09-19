@@ -55,9 +55,9 @@ else
 fi
 
 # check if patch path exists
-if [ ! -d "$PATCHPATH" ];then 
-    F_LOG "ERROR: Patch directory ($PATCHPATH) does not exists! ABORTED"
-    $YAD --button="Exit" --text "\nERROR:\n\nPatch directory does not exists?!\n\n"
+if [ ! -d "$FWULPATCHDIR/patches" ];then 
+    F_LOG "ERROR: Patch directory ($FWULPATCHDIR/patches) does not exists! ABORTED"
+    $YAD --center -- width=500 --button="Exit" --text "\nERROR:\n\nPatch directory does not exists?!\n\n"
     F_EXIT "$0"
 fi
 
