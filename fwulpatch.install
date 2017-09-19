@@ -21,7 +21,7 @@ post_install(){
     Comment=FWUL LivePatcher
     Terminal=false
     Name=FWUL LivePatcher
-    Exec=gksu -D "FWUL LivePatcher" /opt/fwul/patches/livepatcher.sh
+    Exec=gksu -D "FWUL LivePatcher" /usr/local/bin/livepatcher.sh
     Icon=checkbox-touch
 EOSFT
 
