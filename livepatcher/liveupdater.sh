@@ -62,7 +62,7 @@ if [ ! -d "$FWULPATCHDIR" ];then
 fi
 
 # clean any previous run
-[ -d /tmp/arch_fwulpatch-master ] && F_LOG "$(rm -vf /tmp/arch_fwulpatch-master)"
+[ -d /tmp/arch_fwulpatch-master ] && F_LOG "$(rm -vfr /tmp/arch_fwulpatch-master)"
 [ -f $PATCHZIP ] && F_LOG "$(rm -vf $PATCHZIP)"
 
 # show download dialog
