@@ -12,7 +12,7 @@ FWULVARS=/var/lib/fwul/generic.vars
 YAD="yad --title=Updating-LivePatcher"
 DEBUG=0
 PATCHURL="https://github.com/steadfasterX/arch_fwulpatch/archive/master.zip"
-PATCHZIP=fwulpatches.zip
+PATCHZIP=/tmp/fwulpatches.zip
 
 
 # check perms & restart if required
@@ -36,12 +36,12 @@ LOG=${LOGPATH}/liveupdater.log
 echo -e "\n$(date) - Starting $0" >> $LOG
 
 # include FWUL functions
-if [ -r "$FWULLIB" ];then
-	source $FWULLIB
-	[ $DEBUG -eq 1 ] && echo "sourced $FWULLIB"
+if [ -r "$GENFUNC" ];then
+	source $GENFUNC
+	[ $DEBUG -eq 1 ] && echo "sourced $GENFUNC"
 else
 	F_ERR "cant find needed library file" $LOG
-	F_EXIT "$0 LIB" "3"
+	F_EXIT "$0 GENFUNC" "3"
 fi
 
 # include FWUL release info
