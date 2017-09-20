@@ -79,10 +79,9 @@ for patch in $(find $FWULPATCHDIR -type f -name *.sh | sort -n);do
     if [ $PATCHERR -ne 0 ];then
         F_ERR "problem occured with $patch"   
         $YAD --button=Exit --text "problem occured with $patch! ABORTED.\nCheck $LOG"
-	F_EXIT "$0 patching"
+    F_EXIT "$0 patching"
     fi	
 done
-
 
 source $RELEASE
 [ -z $patchlevel ] && patchlevel=0
@@ -91,7 +90,7 @@ if [ "$PREVVER" != "${fwulversion}.${patchlevel}" ];then
     $YAD --center --width=300 --button=Exit --text "\nAll patches applied.\n\nBefore:\t<b>$PREVVER</b>\nNow:\t<b>${fwulversion}.${patchlevel}</b>\n"
 else
     F_LOG "previous FWUL version $PREVVER matches new one: ${fwulversion}.${patchlevel}"
-    $YAD --center --width=200 --text "\nFinished - no update taken.\n"
+    $YAD --center --width=200 --text "\nFinished - all patches re-applied.\n"
 fi
 
 F_LOG "All finished"
