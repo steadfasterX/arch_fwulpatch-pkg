@@ -46,7 +46,8 @@ fi
 if [ -r "$RELEASE" ];then
     source $RELEASE
     [ $DEBUG -eq 1 ] && echo "sourced $RELEASE"
-    PREVVER=$fwulversion
+    [ -z $patchlevel ] && patchlevel=0
+    PREVVER=${fwulversion}.${patchlevel}
 else
     F_ERR "cant find needed library file"
     F_EXIT "$0 RELEASE" "3"
@@ -84,6 +85,7 @@ done
 
 
 source $RELEASE
+[ -z $patchlevel ] && patchlevel=0
 if [ "$PREVVER" != "${fwulversion}.${patchlevel}" ];then
     F_LOG "previous FWUL version $PREVVER differs from the new one: ${fwulversion}${patchlevel}"
     $YAD --center --width=300 --button=Exit --text "\nAll patches applied.\n\nBefore:\t<b>$PREVVER</b>\nNow:\t<b>${fwulversion}.${patchlevel}</b>\n"

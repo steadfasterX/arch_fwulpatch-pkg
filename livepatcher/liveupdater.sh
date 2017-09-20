@@ -50,7 +50,8 @@ fi
 if [ -r "$RELEASE" ];then
     source $RELEASE
     [ $DEBUG -eq 1 ] && echo "sourced $RELEASE"
-    CURVER="$(echo $fwulversion | tr -d '.')"
+    [ -z $patchlevel ] && patchlevel=0
+    CURVER="$(echo ${fwulversion}${patchlevel} | tr -d '.')"
 else
     F_ERR "cant find needed library file"
     F_EXIT "$0 RELEASE" "3"
