@@ -48,7 +48,8 @@ if [ -r "$RELEASE" ];then
     source $RELEASE
     [ $DEBUG -eq 1 ] && echo "sourced $RELEASE"
     [ -z $patchlevel ] && patchlevel=0
-    PREVVER=${fwulversion}.${patchlevel}
+    PREVVER="${fwulversion}.${patchlevel}"
+    PREVVERNODIG="$(echo $PREVVER |tr -d '.')"
 else
     F_ERR "cant find needed library file"
     F_EXIT "$0 RELEASE" "3"
@@ -70,7 +71,7 @@ $YAD --center --width=800\
 
 YADANS=$?
 F_LOG "Answered: $YADANS"
-if [ $YADANS -ne 99 ]|&&[ $YADANS -ne 2 ];then
+if [ $YADANS -ne 99 ] && [ $YADANS -ne 2 ];then
     F_LOG "Aborted by user" && F_EXIT "$0"
 fi
 
@@ -97,8 +98,8 @@ if [ "$YADANS" -eq 2 ];then
 else
     F_LOG "will check before patching to ensure we apply when needed only"
     REMVER=$(F_CHKLASTTAG "${REPOURL}.git")
-    [ "$REMVER" -le "$PREVVER" ] && $YAD --button=Close --center --width=300 --height=200 --text "\n\nYour LivePatcher database is already current\n\n" && F_EXIT "$0 noupdates" 0
-    F_LOG "$REMVER is higher than $PREVVER"
+    [ "$REMVER" -le "$PREVVERNODIG" ] && $YAD --button=Close --center --width=300 --height=200 --text "\n\nYour LivePatcher database is already current\n\n" && F_EXIT "$0 noupdates" 0
+    F_LOG "$REMVER is higher than $PREVVERNODIG"
     F_PATCH
 fi
 
