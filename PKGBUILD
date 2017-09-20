@@ -33,7 +33,7 @@ package() {
     install -o ${USER} -g ${GROUP} -m 0755 $srcdir/../livepatcher/*.sh $pkgdir/usr/local/bin/
     
     # add license
-    mkdir -p "$pkgdir/usr/share/licenses/$pkgname"
+    install -d -m 0775 $pkgdir/usr/share/licenses/$pkgname
     install -D -m 644 ./LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
 
