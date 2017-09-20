@@ -41,7 +41,7 @@ package() {
     # set perms
     for ref in $(find $pkgdir/* -type d);do
         realpath=${ref/$pkgdir/}
-        echo "chmod --reference=$realpath $ref"
+        chmod -v --reference=$realpath $ref
     done
 }
 
