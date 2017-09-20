@@ -24,7 +24,7 @@ package() {
 
     # add patches
     install -d -m 0750 $pkgdir/${FWULPATCHDIR}
-    install -d -m 0775 $pkgdir/usr/local/bin $pkgdir/$PFWULLIB
+    install -d -m 0755 $pkgdir/usr/local/bin $pkgdir/$PFWULLIB
     install -o ${USER} -g ${GROUP} -m 0700 patches/* $pkgdir/${FWULPATCHDIR}
 
     # inject funcs (should be moved to separate pkg...)
