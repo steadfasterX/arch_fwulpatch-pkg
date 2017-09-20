@@ -98,7 +98,7 @@ if [ "$YADANS" -eq 2 ];then
 else
     F_LOG "will check before patching to ensure we apply when needed only"
     REMVER=$(F_CHKLASTTAG "${REPOURL}.git")
-    [ "$REMVER" -le "$PREVVERNODIG" ] && $YAD --button=Close --center --width=300 --height=200 --text "\n\nYour LivePatcher database is already current\n\n" && F_EXIT "$0 noupdates" 0
+    [ "$REMVER" -le "$PREVVERNODIG" ] && $YAD --button=Close --center --width=300 --height=200 --text "\n\nYour patchlevel is already current\n\n" && F_EXIT "$0 nopatchneeded" 0
     F_LOG "$REMVER is higher than $PREVVERNODIG"
     F_PATCH
 fi
