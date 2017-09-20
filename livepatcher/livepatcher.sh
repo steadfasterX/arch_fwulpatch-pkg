@@ -69,7 +69,8 @@ $YAD --center --width=800\
     --button="Cancel":1 --button="Force Mode":2 --button="Start LivePatcher":99
 
 YADANS=$?
-if [ $YADANS -ne 99 ]||[ $YADANS -ne 2 ];then
+F_LOG "Answered: $YADANS"
+if [ $YADANS -ne 99 ]|&&[ $YADANS -ne 2 ];then
     F_LOG "Aborted by user" && F_EXIT "$0"
 fi
 
