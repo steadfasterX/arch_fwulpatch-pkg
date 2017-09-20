@@ -11,7 +11,8 @@ ME=$(id -u)
 FWULVARS=/var/lib/fwul/generic.vars
 YAD="yad --title=Updating-LivePatcher"
 DEBUG=0
-PATCHURL="https://github.com/steadfasterX/arch_fwulpatch/archive/master.zip"
+REPOURL="https://github.com/steadfasterX/arch_fwulpatch"
+PATCHURL="$REPOURL/archive/master.zip"
 PATCHZIP=/tmp/fwulpatches.zip
 
 
@@ -49,10 +50,15 @@ fi
 if [ -r "$RELEASE" ];then
     source $RELEASE
     [ $DEBUG -eq 1 ] && echo "sourced $RELEASE"
+    CURVER="${fwulversion/\./}"
 else
     F_ERR "cant find needed library file"
     F_EXIT "$0 RELEASE" "3"
 fi
+
+# check if needed
+REMVER=$(git ls-remote --tags ${REPOURL}.git|cut -d "/" -f3 |head -n 1 | tr -d '.')
+[ "$REMVER" -le "$CURVER" ] && $YAD --button=Close --center --width=300 -height=200 --text "\n\nYour LivePatcher database is already current\n\n" && F_EXIT "$0 noupdates" 0
 
 # check if patch path exists
 if [ ! -d "$FWULPATCHDIR" ];then 
@@ -73,7 +79,7 @@ fi
 REFRESHDB=$?
 
 if [ $REFRESHDB -eq 0 ];then
-    $YAD --center --width=500 --text "Successfully updated the FWUL LivePatcher database"
+    $YAD --button=Close --center --width=300 -height=200 --text "\n\nSuccessfully updated the FWUL LivePatcher database\n\n"
 else
     F_ERR "ERROR while refreshing FWUL LivePatcher db! Check your internet connection and logfile:\n$LOG\n"
 fi
