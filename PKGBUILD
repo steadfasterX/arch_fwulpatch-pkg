@@ -20,11 +20,14 @@ package() {
     cd "arch_$pkgname-$pkgver"
     
     # create / ensure required dirs exists
-    mkdir -p $pkgdir/$FWULPATCHDIR
+    mkdir -p $pkgdir/usr/share \
+	    $pkgdir/${FWULPATCHDIR} \
+    	    $pkgdir/usr/local/bin \
+	    $pkgdir/$PFWULLIB \
+	    $pkgdir/usr/share/licenses/$pkgname 
 
     # add patches
     install -d -m 0750 $pkgdir/${FWULPATCHDIR}
-    install -d -m 0755 $pkgdir/usr/local/bin $pkgdir/$PFWULLIB
     install -o ${USER} -g ${GROUP} -m 0700 patches/* $pkgdir/${FWULPATCHDIR}
 
     # inject funcs (should be moved to separate pkg...)
@@ -33,7 +36,12 @@ package() {
     install -o ${USER} -g ${GROUP} -m 0755 $srcdir/../livepatcher/*.sh $pkgdir/usr/local/bin/
     
     # add license
-    install -d -m 0775 $pkgdir/usr/share/licenses/$pkgname
     install -D -m 644 ./LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+
+    # set perms
+    for ref in $(find $pkgdir/* -type d);do
+        realpath=${ref/$pkgdir/}
+        echo "chmod --reference=$realpath $ref"
+    done
 }
 
