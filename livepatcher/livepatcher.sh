@@ -11,6 +11,7 @@ ME=$(id -u)
 FWULVARS=/var/lib/fwul/generic.vars
 YAD="yad --title=FWUL-LivePatcher"
 DEBUG=0
+REPOURL="https://github.com/steadfasterX/arch_fwulpatch"
 
 # check perms & restart if required
 if [ $ME -ne 0 ];then
@@ -65,23 +66,40 @@ $YAD --center --width=800\
     --text "\nWelcome to the FWUL Live Patcher.\nThis is mainly useful for FWUL <b>persistent</b> as you have to re-run this on <b>forgetful</b> after each reboot\n" \
     --form \
     --field="Check &amp; Download Patches":FBTN "/usr/local/bin/liveupdater.sh" \
-    --button="Cancel":1 --button="Start Live Patcher":99
+    --button="Cancel":1 --button="Force Mode":2 --button="Start LivePatcher":99
 
-[ $? -ne 99 ] && F_LOG "Aborted by user" && F_EXIT "$0"
+YADANS=$?
+if [ $YADANS -ne 99 ]||[ $YADANS -ne 2 ];then
+    F_LOG "Aborted by user" && F_EXIT "$0"
+fi
 
 # patch
-for patch in $(find $FWULPATCHDIR -type f -name *.sh | sort -n);do
-    [ $DEBUG -eq 1 ] && echo "processing $patch"
-    F_LOG "... processing $patch" $LOG
-    spatch="${patch##*/}"
-    (bash $patch) | $YAD --center --width=500 --progress --progress-text="processing $spatch" --auto-close
-    PATCHERR=$?
-    if [ $PATCHERR -ne 0 ];then
-        F_ERR "problem occured with $patch"   
-        $YAD --button=Exit --text "problem occured with $patch! ABORTED.\nCheck $LOG"
-    F_EXIT "$0 patching"
-    fi	
-done
+F_PATCH(){
+    for patch in $(find $FWULPATCHDIR -type f -name *.sh | sort -n);do
+        [ $DEBUG -eq 1 ] && echo "processing $patch"
+        F_LOG "... processing $patch" $LOG
+        spatch="${patch##*/}"
+        (bash $patch) | $YAD --center --width=500 --progress --progress-text="processing $spatch" --auto-close
+        PATCHERR=$?
+        if [ $PATCHERR -ne 0 ];then
+            F_ERR "problem occured with $patch"   
+            $YAD --button=Exit --text "problem occured with $patch! ABORTED.\nCheck $LOG"
+        F_EXIT "$0 patching"
+        fi	
+    done
+}
+
+# force or not depending on the users ans
+if [ "$YADANS" -eq 2 ];then
+    F_LOG "will force patching on user request"
+    F_PATCH
+else
+    F_LOG "will check before patching to ensure we apply when needed only"
+    REMVER=$(F_CHKLASTTAG "${REPOURL}.git")
+    [ "$REMVER" -le "$PREVVER" ] && $YAD --button=Close --center --width=300 --height=200 --text "\n\nYour LivePatcher database is already current\n\n" && F_EXIT "$0 noupdates" 0
+    F_LOG "$REMVER is higher than $PREVVER"
+    F_PATCH
+fi
 
 source $RELEASE
 [ -z $patchlevel ] && patchlevel=0
