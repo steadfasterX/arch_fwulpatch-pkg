@@ -10,7 +10,8 @@ makedepends=('git')
 source=("https://github.com/steadfasterX/arch_$pkgname/archive/$pkgver.tar.gz")
 md5sums=('SKIP')
 BINFIX=usr/local/bin
-FWULPATCHDIR=opt/fwul/patches
+FWULDIR=opt/fwul
+FWULPATCHDIR=$FWULDIR/patches
 PFWULLIB=var/lib/fwul
 USER=root
 GROUP=root
@@ -29,6 +30,7 @@ package() {
     # add patches
     install -d -m 0750 $pkgdir/${FWULPATCHDIR}
     install -o ${USER} -g ${GROUP} -m 0700 patches/* $pkgdir/${FWULPATCHDIR}
+    install -o ${USER} -g ${GROUP} -m 0444 $srcdir/../livepatcher/livepatcher.png $pkgdir/${FWULDIR}
 
     # inject funcs (should be moved to separate pkg...)
     install -o ${USER} -g ${GROUP} -m 0755 $srcdir/../livepatcher/*.func $pkgdir/$PFWULLIB/
