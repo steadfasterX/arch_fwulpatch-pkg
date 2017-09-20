@@ -94,4 +94,16 @@ F_UPDVER(){
             F_LOG "updated FWUL version to $NEWLEV successfully" $LOG
         fi
     fi
+
+}
+
+# check for the latest tag of a given repo
+F_CHKLASTTAG(){
+    # takes 1 arguments
+    # 1 (req) => full git repo uri !
+    REPOURL="$1"
+    [ -z "$REPOURL" ] && F_ERR "Missing repourl!!" && F_EXIT $FUNCNAME 3
+    LASTTAG=$(git ls-remote --refs --tags ${REPOURL} | cut -d "/" -f3 |tail -n 1 | tr -d '.')
+    F_LOG "$FUNCNAME - latest tag on $REPOURL is $LASTTAG"
+    echo $LASTTAG
 }
