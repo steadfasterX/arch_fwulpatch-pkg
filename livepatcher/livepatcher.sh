@@ -84,11 +84,11 @@ done
 
 
 source $RELEASE
-if [ "$PREVVER" != "$fwulversion" ];then
-    F_LOG "previous FWUL version $PREVVER differs from the new one: $fwulversion"
-    $YAD --center --width=300 --button=Exit --text "\nAll patches applied.\n\nBefore:\t<b>$PREVVER</b>\nNow:\t<b>$fwulversion</b>\n"
+if [ "$PREVVER" != "${fwulversion}.${patchlevel}" ];then
+    F_LOG "previous FWUL version $PREVVER differs from the new one: ${fwulversion}${patchlevel}"
+    $YAD --center --width=300 --button=Exit --text "\nAll patches applied.\n\nBefore:\t<b>$PREVVER</b>\nNow:\t<b>${fwulversion}.${patchlevel}</b>\n"
 else
-    F_LOG "previous FWUL version $PREVVER matches new one: $fwulversion"
+    F_LOG "previous FWUL version $PREVVER matches new one: ${fwulversion}.${patchlevel}"
     $YAD --center --width=200 --text "\nFinished - no update taken.\n"
 fi
 
