@@ -24,16 +24,16 @@ package() {
 
     # add patches
     install -d -m 0750 $pkgdir/${FWULPATCHDIR}
+    install -d -m 0775 $pkgdir/usr/local/bin $pkgdir/$PFWULLIB
     install -o ${USER} -g ${GROUP} -m 0700 patches/* $pkgdir/${FWULPATCHDIR}
 
     # inject funcs (should be moved to separate pkg...)
-    mkdir -p $pkgdir/$PFWULLIB $pkgdir/usr/local/bin
     install -o ${USER} -g ${GROUP} -m 0755 $srcdir/../livepatcher/*.func $pkgdir/$PFWULLIB/
     install -o ${USER} -g ${GROUP} -m 0744 $srcdir/../livepatcher/*.vars $pkgdir/$PFWULLIB/
     install -o ${USER} -g ${GROUP} -m 0755 $srcdir/../livepatcher/*.sh $pkgdir/usr/local/bin/
     
     # add license
     mkdir -p "$pkgdir/usr/share/licenses/$pkgname"
-    install -D -m644 ./LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+    install -D -m 644 ./LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
 
