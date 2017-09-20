@@ -66,6 +66,7 @@ F_UPDVER(){
     NEWVER="$1"
     NEWLEV="$2"
     [ -z "$NEWVER" ] && F_ERR "Missing new version id" && F_EXIT $FUNCNAME 3
+    [ -f "$RELEASE" ] && F_ERR "Missing FWUL release file!!" && F_EXIT $FUNCNAME 3
 
     # set main version
     cp $RELEASE ${RELEASE}.old && sed -i "s/fwulversion=.*/fwulversion=$NEWVER/g" $RELEASE
@@ -79,7 +80,12 @@ F_UPDVER(){
 
     # set patch level
     if [ ! -z "$NEWLEV" ];then
-        sed -i "s/patchlevel=.*/patchlevel=$NEWLEV/g" $RELEASE
+        grep patchlevel $RELEASE >> /dev/null 2>&1
+        if [ $? -eq 0 ];then
+            sed -i "s/patchlevel=.*/patchlevel=$NEWLEV/g" $RELEASE
+        else
+            echo "patchlevel=$NEWLEV" >> $RELEASE
+        fi
         if [ $? -ne 0 ];then
             F_ERR "while trying to change FWUL patchlevel to $NEWLEV"
             cp ${RELEASE}.old $RELEASE
