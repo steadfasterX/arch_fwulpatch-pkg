@@ -58,7 +58,7 @@ else
 fi
 
 # check if needed
-REMVER=$(git ls-remote --tags ${REPOURL}.git|cut -d "/" -f3 |head -n 1 | tr -d '.')
+REMVER=$(git ls-remote --refs --tags ${REPOURL}.git|cut -d "/" -f3 |tail -n 1 | tr -d '.')
 [ "$REMVER" -le "$CURVER" ] && $YAD --button=Close --center --width=300 -height=200 --text "\n\nYour LivePatcher database is already current\n\n" && F_EXIT "$0 noupdates" 0
 F_LOG "$REMVER is higher than $CURVER"
 
