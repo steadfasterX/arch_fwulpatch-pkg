@@ -43,5 +43,6 @@ package() {
         realpath=${ref/$pkgdir/}
         [ -d "$realpath" ] && chmod -v --reference=$realpath $ref
     done
+    echo finished
 }
 
