@@ -66,7 +66,7 @@ F_UPDVER(){
     NEWVER="$1"
     NEWLEV="$2"
     [ -z "$NEWVER" ] && F_ERR "Missing new version id" && F_EXIT $FUNCNAME 3
-    [ -f "$RELEASE" ] && F_ERR "Missing FWUL release file!!" && F_EXIT $FUNCNAME 3
+    [ ! -f "$RELEASE" ] && F_ERR "Missing FWUL release file!!" && F_EXIT $FUNCNAME 3
 
     # set main version
     cp $RELEASE ${RELEASE}.old && sed -i "s/fwulversion=.*/fwulversion=$NEWVER/g" $RELEASE
