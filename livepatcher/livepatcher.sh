@@ -9,7 +9,7 @@
 LOGINUSR=$SUDO_USER
 ME=$(id -u)
 FWULVARS=/var/lib/fwul/generic.vars
-YAD="yad --title=FWUL-LivePatcher"
+YAD="yad --image=/opt/fwul/livepatcher.png --window-icon=/opt/fwul/livepatcher.png --title=FWUL-LivePatcher"
 DEBUG=0
 REPOURL="https://github.com/steadfasterX/arch_fwulpatch"
 
@@ -58,13 +58,13 @@ fi
 # check if patch path exists
 if [ ! -d "$FWULPATCHDIR" ];then 
     F_LOG "ERROR: Patch directory ($FWULPATCHDIR) does not exists! ABORTED"
-    $YAD --button="Exit" --text "\nERROR:\n\nPatch directory does not exists?!\n\n"
+    $YAD --button="Exit" --text "ERROR:\n\nPatch directory does not exists?!\n\n"
     F_EXIT "$0"
 fi
 
 # show main dialog
 $YAD --center --width=400 --height=300\
-    --text "\nWelcome to the FWUL Live Patcher.\nThis is mainly useful for FWUL <b>persistent</b> as you have to re-run this on <b>forgetful</b> after each reboot\n" \
+    --text "Welcome to the FWUL Live Patcher.\nPatching is useful for FWUL <b>persistent</b> as you have to re-run this on <b>forgetful</b> after each reboot\n\n" \
     --form \
     --field="Check &amp; Download Patches":FBTN "/usr/local/bin/liveupdater.sh" \
     --button="Cancel":1 --button="Force Mode":2 --button="Start LivePatcher":99
@@ -98,7 +98,7 @@ if [ "$YADANS" -eq 2 ];then
 else
     F_LOG "will check before patching to ensure we apply when needed only"
     REMVER=$(F_CHKLASTTAG "${REPOURL}.git")
-    [ "$REMVER" -le "$PREVVERNODIG" ] && $YAD --button=Close --center --width=300 --height=200 --text "\n\nYour patchlevel is already current\n\n" && F_EXIT "$0 nopatchneeded" 0
+    [ "$REMVER" -le "$PREVVERNODIG" ] && $YAD --button=Close --center --width=300 --height=200 --text "Your patchlevel is top current\n\n" && F_EXIT "$0 nopatchneeded" 0
     F_LOG "$REMVER is higher than $PREVVERNODIG"
     F_PATCH
 fi
@@ -107,10 +107,10 @@ source $RELEASE
 [ -z $patchlevel ] && patchlevel=0
 if [ "$PREVVER" != "${fwulversion}.${patchlevel}" ];then
     F_LOG "previous FWUL version $PREVVER differs from the new one: ${fwulversion}${patchlevel}"
-    $YAD --center --width=300 --button=Exit --text "\nAll patches applied.\n\nBefore:\t<b>$PREVVER</b>\nNow:\t<b>${fwulversion}.${patchlevel}</b>\n"
+    $YAD --center --width=300 --button=Exit --text "All patches applied.\n\nBefore:\t<b>$PREVVER</b>\nNow:\t<b>${fwulversion}.${patchlevel}</b>\n"
 else
     F_LOG "previous FWUL version $PREVVER matches new one: ${fwulversion}.${patchlevel}"
-    $YAD --center --width=200 --text "\nFinished - all patches re-applied.\n"
+    $YAD --button=Close --center --width=300 --text "Finished - all patches re-applied.\n"
 fi
 
 F_LOG "All finished"

@@ -9,7 +9,7 @@
 LOGINUSR=$SUDO_USER
 ME=$(id -u)
 FWULVARS=/var/lib/fwul/generic.vars
-YAD="yad --title=Updating-LivePatcher"
+YAD="yad --image=/opt/fwul/livepatcher.png --window-icon=/opt/fwul/livepatcher.png --title=Updating-LivePatcher"
 DEBUG=0
 REPOURL="https://github.com/steadfasterX/arch_fwulpatch"
 PATCHURL="$REPOURL/archive/master.zip"
@@ -59,13 +59,13 @@ fi
 
 # check if needed
 REMVER=$(F_CHKLASTTAG "${REPOURL}.git")
-[ "$REMVER" -le "$CURVER" ] && $YAD --button=Close --center --width=300 --height=200 --text "\n\nYour LivePatcher database is already current\n\n" && F_EXIT "$0 noupdates" 0
+[ "$REMVER" -le "$CURVER" ] && $YAD --button=Close --center --width=300 --height=200 --text "Your LivePatcher database is already current\n\n" && F_EXIT "$0 noupdates" 0
 F_LOG "$REMVER is higher than $CURVER"
 
 # check if patch path exists
 if [ ! -d "$FWULPATCHDIR" ];then 
     F_LOG "ERROR: Patch directory ($FWULPATCHDIR) does not exists! ABORTED"
-    $YAD --center -- width=500 --button="Exit" --text "\nERROR:\n\nPatch directory does not exists?!\n\n"
+    $YAD --center -- width=500 --button="Exit" --text "ERROR:\n\nPatch directory does not exists?!\n\n"
     F_EXIT "$0"
 fi
 
@@ -81,7 +81,7 @@ fi
 REFRESHDB=$?
 
 if [ $REFRESHDB -eq 0 ];then
-    $YAD --button=Close --center --width=400 --height=200 --text "\n\nSuccessfully updated the FWUL LivePatcher database\n\n"
+    $YAD --button=Close --center --width=400 --height=200 --text "Successfully updated the FWUL LivePatcher database\n\n"
 else
     F_ERR "ERROR while refreshing FWUL LivePatcher db! Check your internet connection and logfile:\n$LOG\n"
 fi
