@@ -50,7 +50,7 @@ fi
 if [ -r "$RELEASE" ];then
     source $RELEASE
     [ $DEBUG -eq 1 ] && echo "sourced $RELEASE"
-    CURVER="${fwulversion/\./}"
+    CURVER="$(echo $fwulversion | tr -d '.')"
 else
     F_ERR "cant find needed library file"
     F_EXIT "$0 RELEASE" "3"
@@ -59,6 +59,7 @@ fi
 # check if needed
 REMVER=$(git ls-remote --tags ${REPOURL}.git|cut -d "/" -f3 |head -n 1 | tr -d '.')
 [ "$REMVER" -le "$CURVER" ] && $YAD --button=Close --center --width=300 -height=200 --text "\n\nYour LivePatcher database is already current\n\n" && F_EXIT "$0 noupdates" 0
+F_LOG "$REMVER is higher than $CURVER"
 
 # check if patch path exists
 if [ ! -d "$FWULPATCHDIR" ];then 
@@ -79,7 +80,7 @@ fi
 REFRESHDB=$?
 
 if [ $REFRESHDB -eq 0 ];then
-    $YAD --button=Close --center --width=300 -height=200 --text "\n\nSuccessfully updated the FWUL LivePatcher database\n\n"
+    $YAD --button=Close --center --width=400 --height=200 --text "\n\nSuccessfully updated the FWUL LivePatcher database\n\n"
 else
     F_ERR "ERROR while refreshing FWUL LivePatcher db! Check your internet connection and logfile:\n$LOG\n"
 fi
