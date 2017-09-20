@@ -69,7 +69,7 @@ $YAD --center --width=800\
 [ $? -ne 99 ] && F_LOG "Aborted by user" && F_EXIT "$0"
 
 # patch
-for patch in $(find $FWULPATCHDIR -type f -name *.sh);do
+for patch in $(find $FWULPATCHDIR -type f -name *.sh | sort -n);do
     [ $DEBUG -eq 1 ] && echo "processing $patch"
     F_LOG "... processing $patch" $LOG
     spatch="${patch##*/}"
