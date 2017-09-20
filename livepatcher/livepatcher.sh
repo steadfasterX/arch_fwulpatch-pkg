@@ -63,7 +63,7 @@ if [ ! -d "$FWULPATCHDIR" ];then
 fi
 
 # show main dialog
-$YAD --center --width=800\
+$YAD --center --width=400 --height=300\
     --text "\nWelcome to the FWUL Live Patcher.\nThis is mainly useful for FWUL <b>persistent</b> as you have to re-run this on <b>forgetful</b> after each reboot\n" \
     --form \
     --field="Check &amp; Download Patches":FBTN "/usr/local/bin/liveupdater.sh" \
