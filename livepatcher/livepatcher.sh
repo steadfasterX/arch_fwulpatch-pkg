@@ -94,6 +94,7 @@ F_PATCH(){
 # force or not depending on the users ans
 if [ "$YADANS" -eq 2 ];then
     F_LOG "will force patching on user request"
+    cp ${RELEASE} ${RELEASE}.orig
     F_PATCH
 else
     F_LOG "will check before patching to ensure we apply when needed only"
@@ -105,12 +106,14 @@ fi
 
 source $RELEASE
 [ -z $patchlevel ] && patchlevel=0
-if [ "$PREVVER" != "${fwulversion}.${patchlevel}" ];then
-    F_LOG "previous FWUL version $PREVVER differs from the new one: ${fwulversion}${patchlevel}"
+NOWVER="$(echo ${fwulversion}${patchlevel} | tr -d '.')"
+if [ "$PREVVERNODIG" -lt "$NOWVER" ] && [ "$YADANS" -ne 2 ];then
+    F_LOG "previous FWUL version $PREVVER ($PREVVERNODIG) differs from the new one: ${fwulversion}${patchlevel} ($NOWVER)"
     $YAD --center --width=300 --button=Exit --text "All patches applied.\n\nBefore:\t<b>$PREVVER</b>\nNow:\t<b>${fwulversion}.${patchlevel}</b>\n"
 else
     F_LOG "previous FWUL version $PREVVER matches new one: ${fwulversion}.${patchlevel}"
     $YAD --button=Close --center --width=300 --text "Finished - all patches re-applied.\n"
+    F_LOG "$(mv -v ${RELEASE}.orig ${RELEASE})"
 fi
 
 F_LOG "All finished"
