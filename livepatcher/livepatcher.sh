@@ -111,9 +111,10 @@ if [ "$PREVVERNODIG" -lt "$NOWVER" ] && [ "$YADANS" -ne 2 ];then
     F_LOG "previous FWUL version $PREVVER ($PREVVERNODIG) differs from the new one: ${fwulversion}${patchlevel} ($NOWVER)"
     $YAD --center --width=300 --button=Exit --text "All patches applied.\n\nBefore:\t<b>$PREVVER</b>\nNow:\t<b>${fwulversion}.${patchlevel}</b>\n"
 else
-    F_LOG "previous FWUL version $PREVVER matches new one: ${fwulversion}.${patchlevel}"
+    [ "$YADANS" -ne 2 ] && F_LOG "previous FWUL version $PREVVER matches new one: ${fwulversion}.${patchlevel}"
     $YAD --button=Close --center --width=300 --text "Finished - all patches re-applied.\n"
-    F_LOG "$(mv -v ${RELEASE}.orig ${RELEASE})"
+    [ "$YADANS" -eq 2 ] && F_LOG "FORCE mode selected so overriding patched version with previous FWUL version ($PREVVER vs. ${fwulversion}.${patchlevel})" \
+        && F_LOG "$(mv -v ${RELEASE}.orig ${RELEASE})"
 fi
 
 F_LOG "All finished"
