@@ -1,5 +1,5 @@
 pkgname=fwulpatch
-pkgver=2.2.2
+pkgver=2.2.3
 pkgrel=1
 pkgdesc="Patching a FWUL major release without the need to re-install/-deploy"
 arch=('any')

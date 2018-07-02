@@ -3,7 +3,7 @@
 #
 # FWUL Live Patch installer
 #
-# Copyright (c) 2017: steadfasterX <steadfasterX | gmail - com >
+# Copyright (c) 2017-2018: steadfasterX <steadfasterX | gmail - com >
 #####################################################################
 
 post_install(){
@@ -21,7 +21,7 @@ post_install(){
     Comment=FWUL LivePatcher
     Terminal=false
     Name=FWUL LivePatcher
-    Exec=gksu -D "FWUL LivePatcher" /usr/local/bin/livepatcher.sh
+    Exec=lxsu -D "FWUL LivePatcher" /usr/local/bin/livepatcher.sh
     Icon=/opt/fwul/livepatcher.png
 EOSFT
 
