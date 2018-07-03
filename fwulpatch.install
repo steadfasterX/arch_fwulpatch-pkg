@@ -21,7 +21,7 @@ post_install(){
     Comment=FWUL LivePatcher
     Terminal=false
     Name=FWUL LivePatcher
-    Exec=lxsu -D "FWUL LivePatcher" /usr/local/bin/livepatcher.sh
+    Exec=pkexec /usr/local/bin/livepatcher.sh
     Icon=/opt/fwul/livepatcher.png
 EOSFT
 
